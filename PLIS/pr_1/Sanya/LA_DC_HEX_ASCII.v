@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
 module LA_DC_HEX_ASCII(
-input [3:0] HEX,
-output reg [7:0] ASCII
+    input [3:0] HEX,
+    output reg [7:0] ASCII
 );
 always@*
     case(HEX)

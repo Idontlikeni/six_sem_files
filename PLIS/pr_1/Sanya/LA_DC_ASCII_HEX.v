@@ -1,9 +1,9 @@
 `timescale 1ns / 1ps
 
 module LA_DC_ASCII_HEX(
-input [7:0] ASCII,
-output reg [3:0] HEX,
-output HEX_FLG
+    input [7:0] ASCII,
+    output reg [3:0] HEX,
+    output HEX_FLG
 );
 //HEX_FLAG
 assign HEX_FLG = ASCII == 8'h30 |

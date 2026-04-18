@@ -8,6 +8,7 @@ module TOP_LA(
     input UART_RXD,
     output UART_TXD
 );
+
 wire RST;
 reg [1:0] RST_S; // Reset sync
 
@@ -85,18 +86,18 @@ wire [7:0] DATA;
 wire HEX_FLG;
 
 DMI_FSM FSM(
-    .CLK(CLK),
-    .RST(RST),
+    .clk(CLK),
+    .rst(RST),
     .RX_DATA_EN(RX_DATA_EN),
     .RX_DATA_R(RX_DATA),
-    .TX_RDYT(TX_RDY_T),
+    .TX_RDY_T(TX_RDY_T),
     .TX_DATA_T(TX_DATA_T),
     .TX_RDY_R(TX_RDY_R),
     .ASCII_DATA(ASCII_DATA),
     .HEX_FLG(HEX_FLG),
     .DC_HEX_DATA(DC_HEX_DATA),
     .HEX_DATA(HEX_DATA),
-    .DC_ASCII_DATA(),
+    .DC_ASCII_DATA(DC_ASCII_DATA),
     .ADDR(ADDR),
     .DATA(DATA)
 );
@@ -113,7 +114,7 @@ LA_DC_HEX_ASCII HEX_TO_ASCII (
 LA_DC_ASCII_HEX ASCII_TO_HEX (
     .ASCII(ASCII_DATA),
     .HEX(DC_HEX_DATA),
-    .HEX_FLG()
+    .HEX_FLG(HEX_FLG)
 );
 
 endmodule

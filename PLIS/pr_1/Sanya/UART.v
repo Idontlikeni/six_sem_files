@@ -50,7 +50,7 @@ always@(posedge CLK,posedge RST)
         else if(TXCT_R) TX_SAMP_CT <= 3'b0000;
         else if(UART_CE) TX_SAMP_CT <= TX_SAMP_CT + 1'b1;
     end
-assign TX_CE = UART_CE & TX_SAMP_CT == 4'b1111;
+assign TX_CE = UART_CE & (TX_SAMP_CT == 4'b1111);
 
 //RX_FSM
 localparam [2:0] RX_IDLE =  3'd0;
@@ -65,178 +65,168 @@ reg [2:0] RX_FSM;
 reg [2:0] RX_DATA_CT;
 // reg RXT_RG;
 always@(posedge CLK, posedge RST)
-    begin
-        if(RST)
-            begin
-                RX_FSM <= RX_IDLE;
-                RX_DATA_EN <= 0;
-                RX_DATA_T <= 0;
-                RX_DATA_CT <= 0;
-                RXCT_R <= 1'b1;
+begin
+    if(RST)
+        begin
+            RX_FSM <= RX_IDLE;
+            RX_DATA_EN <= 0;
+            RX_DATA_T <= 0;
+            RX_DATA_CT <= 0;
+            RXCT_R <= 1'b1;
+        end
+    else
+        case(RX_FSM)
+            RX_IDLE:begin // Waiting for start bit
+                RX_DATA_EN <= 1'b0;
+                if(~RXD_RG)
+                begin
+                    RX_FSM <= RX_RSTRB;
+                    RX_DATA_T[9] <= 1'b0; // RX_DATA_T[9]?
+                    RXCT_R <= 1'b0;
+                end
             end
-        else
-            case(RX_FSM)
-                RX_IDLE:begin // Waiting for start bit
-                    RX_DATA_EN <= 1'b0;
-                    if(~RXD_RG)
-                        begin
-                            RX_FSM <= RX_RSTRB;
-                            RX_DATA_T[0] <= 1'd0; // RX_DATA_T[9]?
-                            RXCT_R <= 1'b0;
-                        end
-                end
-                RX_RSTRB:begin // recieve start bit
-                    if(RX_CE) begin
-                        if(RXD_RG) begin
-                            RX_FSM <= RX_IDLE;
-                            RXCT_R <= 1'd1;
-                        end else RX_FSM <= RX_RDT;
-                    end 
-                end
-                RX_RDT: if(RX_CE)begin // recieve data
-                    RX_DATA_T[7:0] <= {RXD_RG, RX_DATA_T[7:1]};
-                    RX_DATA_CT <= RX_DATA_CT + 1'b1;
-                    if(RX_DATA_CT == 3'h7) RX_FSM <= RX_RPARB;
-                end
-                RX_RPARB: if(RX_CE) // Recieve parity bit
+            RX_RSTRB:begin // recieve start bit
+                if(RX_CE) begin
+                    if(RXD_RG) begin
+                        RX_FSM <= RX_IDLE;
+                        RXCT_R <= 1'd1;
+                    end else RX_FSM <= RX_RDT;
+                end 
+            end
+            RX_RDT: if(RX_CE)begin // recieve data
+                RX_DATA_T[7:0] <= {RXD_RG, RX_DATA_T[7:1]};
+                RX_DATA_CT <= RX_DATA_CT + 1'b1;
+                if(RX_DATA_CT == 3'h7) RX_FSM <= RX_RPARB;
+            end
+            RX_RPARB: if(RX_CE) // Recieve parity bit
+            begin
+                RX_FSM <= RX_RSTB1; 
+                RX_DATA_T[8] <= ~(^RX_DATA[7:0]) ^ RXD_RG; // Result of parity check (Odd) (ask about presentation)
+            end
+            RX_RSTB1: if(RX_CE) // Recieve stop bit 1
+            begin
+                RX_FSM <= RX_WEND;
+                RX_DATA_T[9] <= ~RXD_RG; 
+            end
+            RX_RSTB2: if(RX_CE) // Recieve stop bit 2
+            begin
+                if(RXD_RG) 
                     begin
-                        RX_FSM <= RX_RSTB1; 
-                        RX_DATA_T[8] <= ~(^RX_DATA[7:0]) ^ RXD_RG; // Result of parity check (Odd) (ask about presentation)
-                    end
-                RX_RSTB1: if(RX_CE) // Recieve stop bit 1
+                       RX_FSM <= RX_IDLE;
+                       RX_DATA_EN <= 1'b1; // I dont really get why (ask later)
+                       RXCT_R <= 1'b1; 
+                    end    
+                else
                     begin
                         RX_FSM <= RX_WEND;
-                        RX_DATA_T[9] <= ~RXD_RG; 
-                    end
-                RX_RSTB2: if(RX_CE) // Recieve stop bit 2
-                    begin
-                        if(RXD_RG) 
-                            begin
-                               RX_FSM <= RX_IDLE;
-                               RX_DATA_EN <= 1'b1; // I dont really get why (ask later)
-                               RXCT_R <= 1'b1; 
-                            end    
-                        else
-                            begin
-                                RX_FSM <= RX_WEND;
-                                RX_DATA_T[9] <= 1'b1;
-                            end                     
-                    end
-                RX_WEND: if(RX_CE) // Wait end
-                    begin
-                        if(RXD_RG) 
-                        begin
-                            RX_FSM <= RX_IDLE;
-                            RX_DATA_EN <= 1'b1;
-                            RXCT_R <= 1'b1;
-                        end
-                    end
-                default:
-                    begin
-                        RX_FSM <= RX_IDLE;
-                        RX_DATA_EN <= 1'b0;
-                        RX_DATA_T <= 10'd0;
-                        RX_DATA_CT <= 3'd0;
-                        RXCT_R <= 1'b1;
-                    end
-                endcase
-    end         
-
-    reg [2:0] tx_fsm;
-    localparam [2:0] tx_idle =  3'd0;
-    localparam [2:0] tx_wce =   3'd1;
-    localparam [2:0] tx_tstrb = 3'd2;
-    localparam [2:0] tx_tdt =   3'd3;
-    localparam [2:0] tx_tparb = 3'd4;
-    localparam [2:0] tx_tstb1 = 3'd5;
-    reg [7:0] tx_data;
-    reg       tx_par_bit_rg;
-    reg [2:0] tx_data_ct;
-    
-    
-    reg uart_ce;
-    reg [10:0] uart_ct;
-    
-    always@(posedge CLK, posedge RST) // ????
-        if(RST) begin
-            uart_ce <= 1'b0;
-            uart_ct <= 11'd0;
-        end
-        else begin
-            if(uart_ct == 11'd1301) uart_ct <= 11'd0; // Why 1301?
-            else uart_ct <= uart_ct + 1'b1;
-            uart_ce <= uart_ct == 11'd1301;
-        end
-        
-    always@(posedge CLK, posedge RST)
-        if(RST)begin
-            tx_fsm <= tx_idle;
-            tx_data <= 8'h00;
-            tx_par_bit_rg <= 1'b0;
-            TX_RDY_R <= 1'b1;
-            tx_data_ct <= 3'd0;
-            TXD <= 1'b1;
-            TXCT_R <= 1'b1;
-        end
-        else
-            case(tx_fsm)
-                tx_idle: if(TX_RDY_R) begin // IDLE (TX_RDY_T in file)
-                    tx_data <= TX_DATA_R;
-                    tx_par_bit_rg <= ~(^TX_DATA_R); // Parity caclculation result
-                    TX_RDY_R <= 1'b0;
-                    if(uart_ce) begin
-                        tx_fsm <= tx_tstrb;
-                        TXD <= 1'b0;
-                        TXCT_R <= 1'b0;
-                    end
-                    else tx_fsm <= tx_wce;
+                        RX_DATA_T[9] <= 1'b1;
+                    end                     
+            end
+            RX_WEND: if(RX_CE) // Wait end
+            begin
+                if(RXD_RG) 
+                begin
+                    RX_FSM <= RX_IDLE;
+                    RX_DATA_EN <= 1'b1;
+                    RXCT_R <= 1'b1;
                 end
-                tx_wce: if(uart_ce) begin // Wait for UART_CE signal
-                    tx_fsm <= tx_tstrb;
+            end
+            default:
+            begin
+                RX_FSM <= RX_IDLE;
+                RX_DATA_EN <= 1'b0;
+                RX_DATA_T <= 10'd0;
+                RX_DATA_CT <= 3'd0;
+                RXCT_R <= 1'b1;
+            end
+        endcase
+end         
+
+reg [2:0] TX_FSM;
+reg [2:0] TX_DATA_CT;
+reg TX_PAR_BIT_RG;
+reg [7:0] TX_DATA;
+reg TX_RDY_R;
+localparam TX_IDLE = 3'd0;
+localparam TX_WCE = 3'd1;
+localparam TX_TSTRB = 3'd2;
+localparam TX_TDT = 3'd3;
+localparam TX_TPARB = 3'd4;
+localparam TX_TSTB1 = 3'd5;
+
+always @(posedge CLK, posedge RST)
+    if (RST) begin
+        TX_FSM <= TX_IDLE;
+        TX_DATA <= 8'h00;
+        TX_PAR_BIT_RG <= 1'b0;
+        TX_RDY_R <= 1'b1;
+        TX_DATA_CT <= 3'b000;
+        TXD <= 1'b1;
+        TXCT_R <= 1'b1;
+    end
+    else
+        case (TX_FSM)
+            TX_IDLE: if (TX_RDY_T) begin
+                TX_DATA <= TX_DATA_R;
+                TX_PAR_BIT_RG <= ~(^TX_DATA_R[7:0]);
+                TX_RDY_R <= 1'b0;
+                if (UART_CE) begin
+                    TX_FSM <= TX_TSTRB;
                     TXD <= 1'b0;
                     TXCT_R <= 1'b0;
                 end
-                tx_tstrb: if(TX_CE) begin // Transmit start bit
-                    tx_fsm <= tx_tstrb;
-                    TXD <= tx_data[0];
-                    tx_data <= {1'b0, tx_data[7:1]};
+                else TX_FSM <= TX_WCE;
+            end
+            TX_WCE: if (UART_CE) begin
+                TX_FSM<= TX_TSTRB;
+                TXD <= 1'b0;
+                TXCT_R <= 1'b0;
+            end
+            TX_TSTRB: if (TX_CE) begin
+                TX_FSM <= TX_TDT;
+                TXD <= TX_DATA[0];
+                TX_DATA <= {1'b0, TX_DATA[7:1]};
+            end
+            TX_TDT: if (TX_CE) begin
+                TX_DATA <= {1'b0, TX_DATA[7:1]};
+                TX_DATA_CT <= TX_DATA_CT + 1'b1;
+                if (TX_DATA_CT == 3'd7) begin
+                    TX_FSM <= TX_TPARB;
+                    TXD <= TX_PAR_BIT_RG;
                 end
-                tx_tdt: if(TX_CE) begin // Transmitted data
-                    tx_data <= {1'b0, tx_data[7:1]};
-                    tx_data_ct <= tx_data_ct + 1'b1;
-                    if(tx_data_ct == 3'd7) begin
-                        tx_fsm <= tx_tparb;
-                        TXD <= tx_par_bit_rg;
-                    end
-                    else TXD <= tx_data[0];
-                end
-                
-                tx_tparb: if(TX_CE) begin // Transmit parity bit
-                    tx_fsm <= tx_tstb1;
-                    TXD <= 1'b1;
-                end
-                tx_tstb1: if(TX_CE) begin // Transmit stop bit 1
-                    tx_fsm <= tx_idle;
-                    TXD <= 1'b1 // IN file, without last 2 lines (???)
-                    TX_RDY_R <= 1'b1;
-                    TXCT_R <= 1'b1;
-                end
-                tx_tstb2: if(TX_CE) begin // Transmit stop bit 2
-                    tx_fsm <= tx_idle;
-                    TX_RDY_R <= 1'b1;
-                    TXCT_R <= 1'b1;
-                end
-                default: begin
-                    tx_fsm <= tx_idle;
-                    tx_data <= 8'h00;
-                    tx_par_bit_rg <= 1'b0;
-                    TX_RDY_R <= 1'b1;
-                    tx_data_ct <= 3'd0;
-                    TXD <= 1'b1;
-                    TXCT_R <= 1'b1;
-                end
-            endcase
+                else TXD <= TX_DATA[0];
+            end
+            TX_TPARB: if (TX_CE) begin
+                TX_FSM <= TX_TSTB1;
+                TXD <= 1'b1;
+            end
+            TX_TSTB1: if (TX_CE) begin
+                TX_FSM <= TX_IDLE;
+                TX_RDY_R <= 1'b1;
+                TXCT_R <= 1'b1;
+            end
+            default: begin
+                TX_FSM <= TX_IDLE;
+                TX_DATA <= 8'h00;
+                TX_PAR_BIT_RG <= 1'b0;
+                TX_RDY_R <= 1'b1;
+                TX_DATA_CT <= 3'b000;
+                TXD <= 1'b1;
+                TXCT_R <= 1'b1;
+            end
+        endcase
+
+reg [10:0] UART_CT;
+
+always @(posedge CLK, posedge RST)
+    if (RST) begin
+        UART_CT <= 11'd0;
+        UART_CE <= 1'b0;
+    end
+    else begin
+        if (UART_CT == 11'd1301) UART_CT <= 11'd0;
+        else UART_CT <= UART_CT + 1'b1;
+        UART_CE <= UART_CT == 11'd1301;
+    end
+
 endmodule
-// TODO error generator
-//      all vars to UPPERCASE
-//      Change module names to TU

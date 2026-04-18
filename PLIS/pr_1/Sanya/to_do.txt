@@ -2,3 +2,10 @@ partially done:
 	Top
 	Uart
 
+Done:
+	dc_hex_ascii
+	dc_ascii_hex
+	dmi_rom
+
+DMI_FSM:
+	Вставить данне из варианта + поправить остальные сигналы (см. стр. 30)
