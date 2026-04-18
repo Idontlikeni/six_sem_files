@@ -1,26 +1,26 @@
 `timescale 1ns / 1ps
 
 module DMI_FSM(
-input clk,
-input rst,
+    input clk,
+    input rst,
 
-input RX_DATA_EN,
-input [9:0] RX_DATA_R,
+    input RX_DATA_EN,
+    input [9:0] RX_DATA_R,
 
-output reg       TX_RDY_T,
-output reg [7:0] TX_DATA_T,
-input            TX_RDY_R,
+    output reg       TX_RDY_T,
+    output reg [7:0] TX_DATA_T,
+    input            TX_RDY_R,
 
-output     [7:0] ASCII_DATA,
-input            HEX_FLG,
-input      [3:0] DC_HEX_DATA,
+    output     [7:0] ASCII_DATA,
+    input            HEX_FLG,
+    input      [3:0] DC_HEX_DATA,
 
 
-output reg [3:0] HEX_DATA,
-input      [7:0] DC_ASCII_DATA,
+    output reg [3:0] HEX_DATA,
+    input      [7:0] DC_ASCII_DATA,
 
-output reg [6:0] ADDR,
-input      [7:0] DATA
+    output reg [6:0] ADDR,
+    input      [7:0] DATA
 );
 
 reg [3:0] FSM_STATE;

@@ -11,7 +11,7 @@ module TOP_LA(
 wire RST;
 reg [1:0] RST_S; // Reset sync
 
-wire CE_1KHz;
+wire CE_1Khz;
 wire GEN_FRT_ERR;
 wire GEN_PAR_ERR;
 wire RX_DATA_EN;
@@ -27,7 +27,7 @@ always @ (posedge CLK, posedge SYS_NRST) // reset syncronizer
     else RST_S <= {RST_S[0], 1'b0};
 assign RST = RST_S[1];
 
-LA_DIVIDER # ( // 
+LA_DIVIDER # ( 
     .CNT_WDT(17),
     .DIV(100000)
 ) CLK_DIV (
