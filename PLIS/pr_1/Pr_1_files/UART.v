@@ -216,17 +216,17 @@ always @(posedge CLK, posedge RST)
             end
         endcase
 
-reg [10:0] UART_CT;
+reg [7:0] UART_CT;
 
 always @(posedge CLK, posedge RST)
     if (RST) begin
-        UART_CT <= 11'd0;
+        UART_CT <= 8'd0;
         UART_CE <= 1'b0;
     end
     else begin
-        if (UART_CT == 11'd1301) UART_CT <= 11'd0;
+        if (UART_CT == 11'd163) UART_CT <= 8'd0;
         else UART_CT <= UART_CT + 1'b1;
-        UART_CE <= UART_CT == 11'd1301;
+        UART_CE <= UART_CT == 8'd163;
     end
 
 endmodule

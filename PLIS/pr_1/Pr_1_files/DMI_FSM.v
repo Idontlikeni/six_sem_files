@@ -112,7 +112,7 @@ always @(posedge clk, posedge rst)
             TX_RDY_T <= 1'b0;    
             DATA_CT <= 0; // (разрядность(1'b0))
             RES_CT <= 0;
-            DATA_REG <= 1;
+            DATA_REG <= 0;
             RES_REG <= 0;
             ADDR <= 0;
             END_ADDR <= 0;
@@ -145,9 +145,9 @@ always @(posedge clk, posedge rst)
                 end
                 else
                 begin
-                    DATA_REG <= {DATA_REG[data_bits-5:0], DC_HEX_DATA};
+                    DATA_REG <= {DATA_REG[data_bits - 5 - 1:0], DC_HEX_DATA};
                     DATA_CT <= DATA_CT + 1'b1;
-                    if(DATA_CT == 27) begin
+                    if(DATA_CT == 3'd27) begin
                         FSM_STATE <= RCR;
                         DATA_CT <= 0; // data_bitness Разраядность'b0
                     end
@@ -207,7 +207,7 @@ always @(posedge clk, posedge rst)
                 if(RES_CT == 5'd22) begin // insert K (was 3'd7)
                     FSM_STATE <= TCR;
                     TX_DATA_T <= 8'h0D;
-                    RES_CT <= 0;
+                    RES_CT <= 5'b00000;
                 end
                 else
                 begin
