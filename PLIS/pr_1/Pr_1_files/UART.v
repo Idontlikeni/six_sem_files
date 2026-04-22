@@ -12,7 +12,7 @@ module UART(
                                 // 10 - format window err
                                 // 11 - both
     input            TX_RDY_T,
-    input      [7:0] TX_DATA_T,
+    input      [7:0] TX_DATA_R,
     output reg       TX_RDY_R
 );
 reg [2:0] RXD_SYNC;
@@ -141,7 +141,7 @@ begin
             end
         endcase
 end         
-
+// TODO: Fix second stop bit in rx and tx fsm.
 reg [2:0] TX_FSM;
 reg [2:0] TX_DATA_CT;
 reg TX_PAR_BIT_RG;
