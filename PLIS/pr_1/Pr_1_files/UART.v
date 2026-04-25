@@ -16,7 +16,7 @@ module UART(
     output reg       TX_RDY_R
 );
 reg [2:0] RXD_SYNC;
-wire UART_CE;
+reg UART_CE;
 // Synchro
 wire RXD_RG;
 always@(posedge CLK,posedge RST)
@@ -101,7 +101,7 @@ begin
             RX_RPARB: if(RX_CE) // Recieve parity bit
             begin
                 RX_FSM <= RX_RSTB1; 
-                RX_DATA_T[8] <= ~(^RX_DATA[7:0]) ^ RXD_RG; // Result of parity check (Odd) (ask about presentation)
+                RX_DATA_T[8] <= ~(^RX_DATA_T[7:0]) ^ RXD_RG; // Result of parity check (Odd) (ask about presentation)
             end
             RX_RSTB1: if(RX_CE) // Recieve stop bit 1
             begin
