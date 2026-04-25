@@ -105,7 +105,7 @@ begin
             end
             RX_RSTB1: if(RX_CE) // Recieve stop bit 1
             begin
-                RX_FSM <= RX_WEND;
+                RX_FSM <= RX_RSTB2;
                 RX_DATA_T[9] <= ~RXD_RG; 
             end
             RX_RSTB2: if(RX_CE) // Recieve stop bit 2
@@ -224,7 +224,7 @@ always @(posedge CLK, posedge RST)
         UART_CE <= 1'b0;
     end
     else begin
-        if (UART_CT == 11'd163) UART_CT <= 8'd0;
+        if (UART_CT == 8'd163) UART_CT <= 8'd0;
         else UART_CT <= UART_CT + 1'b1;
         UART_CE <= UART_CT == 8'd163;
     end
