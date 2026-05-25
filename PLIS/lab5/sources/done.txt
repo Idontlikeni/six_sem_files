@@ -1,5 +1,5 @@
 TOP_module = ~understood (apart from comments)
-ANALYZER = ~understood
+ANALYZER = 90% done except for multiplexor
 HANDLER_CMD = ~understood (to do analyzis)
 GEN_MSG = ~understood 
 INFS_8B = I've done it in uni, but I think its not entirely correct
