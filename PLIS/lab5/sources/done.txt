@@ -1,0 +1,14 @@
+TOP_module = ~understood (apart from comments)
+ANALYZER = ~understood
+HANDLER_CMD = ~understood (to do analyzis)
+GEN_MSG = ~understood 
+INFS_8B = I've done it in uni, but I think its not entirely correct
+CNTRL_LEDS = ~understood
+RAM
+
+15 = 33 - 2*n - 6
+
+2n = 33 - 15 - 6
+2n = 12
+n = 6
+

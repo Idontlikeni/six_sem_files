@@ -1,0 +1,41 @@
+Time resolution is 1 ps
+========================================
+=== UART CONTROLLER TEST ===
+========================================
+
+=== TEST 1: Receive correct byte ===
+----------------------------------------
+  Sending: data=0x41, parity=0, framing_err=0
+  [CAPTURE] At time 301875000: RX_DATA_EN=1, RX_DATA_T=0x141
+  PASS: Correct byte received (0x41)
+
+=== TEST 2: Parity error ===
+----------------------------------------
+  Sending: data=0x42, parity=0, framing_err=0
+  [CAPTURE] At time 821755000: RX_DATA_EN=1, RX_DATA_T=0x142
+  PASS: Parity error detected (bit8=1)
+
+=== TEST 3: Framing error ===
+----------------------------------------
+  Sending: data=0x43, parity=1, framing_err=1
+  [CAPTURE] At time 1343275000: RX_DATA_EN=1, RX_DATA_T=0x343
+  PASS: Framing error detected (bit9=1)
+
+=== TEST 4: Transmit byte ===
+----------------------------------------
+  PASS: Transmission completed, TX_RDY_R=1
+
+=== TEST 5: Sequential receive ===
+----------------------------------------
+  Sending: data=0x31, parity=1, framing_err=0
+  [CAPTURE] At time 2410915000: RX_DATA_EN=1, RX_DATA_T=0x131
+  Sending: data=0x32, parity=1, framing_err=0
+  [CAPTURE] At time 2801235000: RX_DATA_EN=1, RX_DATA_T=0x132
+  Sending: data=0x33, parity=0, framing_err=0
+  [CAPTURE] At time 3191555000: RX_DATA_EN=1, RX_DATA_T=0x133
+  PASS: Sequential receive completed
+
+========================================
+=== ALL TESTS PASSED ===
+========================================
+$finish called at time : 3542012 ns : File "M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sim_1/new/test_uart.v" Line 206

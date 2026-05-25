@@ -1,0 +1,355 @@
+
+*** Running vivado
+    with args -log TOP.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source TOP.tcl
+
+
+
+****** Vivado v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source TOP.tcl -notrace
+create_project: Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 379.734 ; gain = 46.777
+Command: read_checkpoint -auto_incremental -incremental M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/utils_1/imports/synth_1/TOP.dcp
+INFO: [Vivado 12-5825] Read reference checkpoint from M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/utils_1/imports/synth_1/TOP.dcp for incremental synthesis
+INFO: [Vivado 12-7989] Please ensure there are no constraint changes
+Command: synth_design -top TOP -part xc7a100tcsg324-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
+INFO: [Device 21-403] Loading part xc7a100tcsg324-1
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 15400
+INFO: [Synth 8-11241] undeclared symbol 'REGCCE', assumed default net type 'wire' [C:/Programs/Xilinx_Windows_Unpacked_2022_2/Vivado/2022.2/data/verilog/src/unimacro/BRAM_SINGLE_MACRO.v:2170]
+INFO: [Synth 8-11241] undeclared symbol 'TX_RDY_R', assumed default net type 'wire' [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/TOP.v:73]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1209.473 ; gain = 410.012
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'TOP' [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/TOP.v:1]
+INFO: [Synth 8-6157] synthesizing module 'DIVIDER' [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DIVIDER.v:1]
+	Parameter DIV bound to: 100000 - type: integer 
+	Parameter CNT_WDT bound to: 17 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'counter' [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/counter.v:1]
+	Parameter step bound to: 1 - type: integer 
+	Parameter mod bound to: 100000 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'counter' (0#1) [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/counter.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'DIVIDER' (0#1) [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DIVIDER.v:1]
+INFO: [Synth 8-6157] synthesizing module 'BTN_FILTER' [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/BTN_FLTR.v:1]
+	Parameter SIZE bound to: 17 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'BTN_FILTER' (0#1) [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/BTN_FLTR.v:1]
+INFO: [Synth 8-6157] synthesizing module 'UART' [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/UART.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'UART' (0#1) [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/UART.v:1]
+INFO: [Synth 8-6157] synthesizing module 'DMI_FSM' [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DMI_FSM.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'DMI_FSM' (0#1) [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DMI_FSM.v:3]
+INFO: [Synth 8-6157] synthesizing module 'DMI_ROM' [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DMI_ROM.v:3]
+INFO: [Synth 8-3876] $readmem data file 'ROM_file.mem' is read successfully [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DMI_ROM.v:9]
+INFO: [Synth 8-6155] done synthesizing module 'DMI_ROM' (0#1) [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DMI_ROM.v:3]
+INFO: [Synth 8-6157] synthesizing module 'DC_HEX_ASCII' [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DC_HEX_ASCII.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'DC_HEX_ASCII' (0#1) [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DC_HEX_ASCII.v:3]
+INFO: [Synth 8-6157] synthesizing module 'DC_ASCII_HEX' [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DC_ASCII_HEX.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'DC_ASCII_HEX' (0#1) [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/DC_ASCII_HEX.v:3]
+INFO: [Synth 8-6155] done synthesizing module 'TOP' (0#1) [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/sources_1/new/TOP.v:1]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1304.477 ; gain = 505.016
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1304.477 ; gain = 505.016
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1304.477 ; gain = 505.016
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.015 . Memory (MB): peak = 1304.477 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/constrs_1/new/constr.xdc]
+Finished Parsing XDC File [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/constrs_1/new/constr.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.srcs/constrs_1/new/constr.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/TOP_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/TOP_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1410.102 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.010 . Memory (MB): peak = 1410.102 ; gain = 0.000
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+INFO: [Synth 8-11241] undeclared symbol 'REGCCE', assumed default net type 'wire' [C:/Programs/Xilinx_Windows_Unpacked_2022_2/Vivado/2022.2/data/verilog/src/unimacro/BRAM_SINGLE_MACRO.v:2170]
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:17 ; elapsed = 00:00:20 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a100tcsg324-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:17 ; elapsed = 00:00:20 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:17 ; elapsed = 00:00:20 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'RX_FSM_reg' in module 'UART'
+INFO: [Synth 8-802] inferred FSM for state register 'TX_FSM_reg' in module 'UART'
+INFO: [Synth 8-802] inferred FSM for state register 'FSM_STATE_reg' in module 'DMI_FSM'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 TX_IDLE |                              000 |                              000
+                  TX_WCE |                              001 |                              001
+                TX_TSTRB |                              010 |                              010
+                  TX_TDT |                              011 |                              011
+                TX_TPARB |                              100 |                              100
+                TX_TSTB1 |                              101 |                              101
+                TX_TSTB2 |                              110 |                              110
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'TX_FSM_reg' using encoding 'sequential' in module 'UART'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 RX_IDLE |                              000 |                              000
+                RX_RSTRB |                              001 |                              001
+                  RX_RDT |                              010 |                              010
+                RX_RPARB |                              011 |                              011
+                RX_RSTB1 |                              100 |                              100
+                RX_RSTB2 |                              101 |                              101
+                 RX_WEND |                              110 |                              110
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'RX_FSM_reg' using encoding 'sequential' in module 'UART'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    IDLE |                        000000001 |                             0000
+                     RDT |                        000000010 |                             0001
+                     RCR |                        000000100 |                             0010
+                     RLF |                        000001000 |                             0011
+                    TRES |                        000010000 |                             0100
+                    TMEM |                        000100000 |                             0101
+                     TDT |                        001000000 |                             0110
+                     TCR |                        010000000 |                             0111
+                     TLF |                        100000000 |                             1000
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'FSM_STATE_reg' using encoding 'one-hot' in module 'DMI_FSM'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:17 ; elapsed = 00:00:22 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   88 Bit       Adders := 1     
+	   2 Input   32 Bit       Adders := 1     
+	   2 Input   18 Bit       Adders := 1     
+	   2 Input    8 Bit       Adders := 1     
+	   2 Input    7 Bit       Adders := 2     
+	   2 Input    5 Bit       Adders := 1     
+	   2 Input    4 Bit       Adders := 2     
+	   2 Input    3 Bit       Adders := 3     
++---XORs : 
+	   2 Input      1 Bit         XORs := 3     
++---XORs : 
+	                8 Bit    Wide XORs := 2     
++---Registers : 
+	               88 Bit    Registers := 1     
+	               28 Bit    Registers := 1     
+	               17 Bit    Registers := 1     
+	               10 Bit    Registers := 1     
+	                8 Bit    Registers := 3     
+	                7 Bit    Registers := 2     
+	                5 Bit    Registers := 1     
+	                4 Bit    Registers := 2     
+	                3 Bit    Registers := 4     
+	                2 Bit    Registers := 3     
+	                1 Bit    Registers := 14    
++---Muxes : 
+	   9 Input   88 Bit        Muxes := 1     
+	   9 Input   28 Bit        Muxes := 1     
+	   2 Input   17 Bit        Muxes := 1     
+	   7 Input   10 Bit        Muxes := 2     
+	   9 Input    9 Bit        Muxes := 1     
+	   2 Input    9 Bit        Muxes := 4     
+	   2 Input    8 Bit        Muxes := 4     
+	   7 Input    8 Bit        Muxes := 1     
+	   9 Input    8 Bit        Muxes := 1     
+	   4 Input    7 Bit        Muxes := 1     
+	   2 Input    7 Bit        Muxes := 1     
+	   9 Input    7 Bit        Muxes := 2     
+	   4 Input    6 Bit        Muxes := 1     
+	   2 Input    6 Bit        Muxes := 1     
+	   2 Input    5 Bit        Muxes := 1     
+	   9 Input    5 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 3     
+	   6 Input    4 Bit        Muxes := 1     
+	   7 Input    3 Bit        Muxes := 4     
+	   2 Input    3 Bit        Muxes := 4     
+	   9 Input    3 Bit        Muxes := 1     
+	   2 Input    1 Bit        Muxes := 12    
+	   7 Input    1 Bit        Muxes := 17    
+	   3 Input    1 Bit        Muxes := 1     
+	   9 Input    1 Bit        Muxes := 10    
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 240 (col length:80)
+BRAMs: 270 (col length: RAMB18 80 RAMB36 40)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+Why this net has no driver: _order_recur <const0>
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:23 ; elapsed = 00:00:30 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+ROM: Preliminary Mapping Report
++------------+------------+---------------+----------------+
+|Module Name | RTL Object | Depth x Width | Implemented As | 
++------------+------------+---------------+----------------+
+|DMI_ROM     | ROM0       | 128x8         | LUT            | 
+|TOP         | p_0_out    | 128x8         | LUT            | 
++------------+------------+---------------+----------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:28 ; elapsed = 00:00:36 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:29 ; elapsed = 00:00:36 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:29 ; elapsed = 00:00:36 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:34 ; elapsed = 00:00:41 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:34 ; elapsed = 00:00:41 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:34 ; elapsed = 00:00:41 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:34 ; elapsed = 00:00:41 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:34 ; elapsed = 00:00:41 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:34 ; elapsed = 00:00:41 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-------+------+
+|      |Cell   |Count |
++------+-------+------+
+|1     |BUFG   |     1|
+|2     |CARRY4 |    47|
+|3     |LUT1   |    22|
+|4     |LUT2   |    59|
+|5     |LUT3   |    62|
+|6     |LUT4   |    45|
+|7     |LUT5   |    41|
+|8     |LUT6   |   111|
+|9     |MUXF7  |     9|
+|10    |FDCE   |   223|
+|11    |FDPE   |     9|
+|12    |FDRE   |    40|
+|13    |IBUF   |     5|
+|14    |OBUF   |     1|
++------+-------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:34 ; elapsed = 00:00:42 . Memory (MB): peak = 1410.102 ; gain = 610.641
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 1 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:24 ; elapsed = 00:00:39 . Memory (MB): peak = 1410.102 ; gain = 505.016
+Synthesis Optimization Complete : Time (s): cpu = 00:00:34 ; elapsed = 00:00:42 . Memory (MB): peak = 1410.102 ; gain = 610.641
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.008 . Memory (MB): peak = 1410.102 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 56 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1410.102 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete, checksum: d08fc331
+INFO: [Common 17-83] Releasing license: Synthesis
+49 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:39 ; elapsed = 00:00:50 . Memory (MB): peak = 1410.102 ; gain = 1006.527
+INFO: [Common 17-1381] The checkpoint 'M:/2010/IVBO-11-23/Timur_Tuk/Pr_1_plis_sem_6/Pr_1_plis_sem_6.runs/synth_1/TOP.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file TOP_utilization_synth.rpt -pb TOP_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Sat May  2 12:06:22 2026...
