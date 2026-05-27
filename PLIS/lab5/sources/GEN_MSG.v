@@ -10,7 +10,7 @@ module MK_GEN_MSG(
     input TX_RDY_R, // вход готовности приема передаваемых данных
     // RES DRP ODPS
     input RES_RDY_T, // вход готовности передачи результата
-    input [28:0] RES_DATA_R, // вход принимаемых данных результата
+    input [36:0] RES_DATA_R, // вход принимаемых данных результата
     output reg RES_RDY_R, // выход готовности приема передаваемых данных результата
     // HEX => ASCII
     output reg [3:0] HEX_DATA,
@@ -32,7 +32,7 @@ localparam TLF = 3'd5; // Передача символа LF
 reg [1:0] RES_CT; // счетчик символов результата
 wire [1:0] CT_MX; // загружаемое значение счетчика RES_CT
 reg [6:0] END_ADDR; // значение последнего адреса обращения к ПЗУ
-reg [11:0] RES_DATA; // данные результата
+reg [19:0] RES_DATA; // данные результата why 12 bits tho, in pres it is 16
 reg RES_FLG; // флаг результата выполнения арифметической операции
 
 // FSM
@@ -43,7 +43,7 @@ always @(posedge CLK, posedge RST)
         TX_DATA_T <= 8'd0;
         RES_RDY_R <= 1'b1;
         RES_CT <= 2'b0;
-        RES_DATA <= 12'd0;
+        RES_DATA <= 20'd0;
         RES_FLG <= 1'b0;
         ADDR <= 7'b0;
         END_ADDR <= 7'b0;
@@ -53,10 +53,10 @@ always @(posedge CLK, posedge RST)
             IDLE: if (RES_RDY_T) begin
                 FSM_STATE <= TRES;
                 RES_RDY_R <= 1'b0;
-                ADDR <= RES_DATA_R[25:19];
-                END_ADDR <= RES_DATA_R[18:12];
-                RES_DATA <= RES_DATA_R[11:0];
-                RES_FLG <= RES_DATA_R[28:26] == 3'b100 | RES_DATA_R[28:26] == 3'b010;
+                ADDR <= RES_DATA_R[33:27]; // [36:34] (k-1:k-3) () () [19:0](k-2n-6:0) 19 = k - 2n - 6 -> 25 = 37 - 2n -> -12 = -2n -> n = 6,k = 37
+                END_ADDR <= RES_DATA_R[26:20];
+                RES_DATA <= RES_DATA_R[19:0];
+                RES_FLG <= RES_DATA_R[36:34] == 3'b001 | RES_DATA_R[36:34] == 3'b000;
                 RES_CT <= CT_MX;
             end
             TRES: begin
@@ -108,17 +108,17 @@ always @(posedge CLK, posedge RST)
                 TX_DATA_T <= 8'd0;
                 RES_RDY_R <= 1'b1;
                 RES_CT <= 2'b0;
-                RES_DATA <= 12'd0;
+                RES_DATA <= 20'd0;
                 RES_FLG <= 1'b0;
                 ADDR <= 7'b0;
                 END_ADDR <= 7'b0;
             end
         endcase
 
-assign CT_MX = (RES_DATA_R[28:26] == 3'b100) ? 2'b01 : 2'b00;
+assign CT_MX = (RES_DATA_R[36:34] == 3'b001) ? 2'b01 : 2'b00;
 
 always@* begin
-    case (RES_CT)
+    case (RES_CT) // Not sure about RES_CT - 2 bit or 3 bit 
         2'b00: HEX_DATA <= RES_DATA[11:8];
         2'b01: HEX_DATA <= RES_DATA[7:4];
         2'b10: HEX_DATA <= RES_DATA[3:0];

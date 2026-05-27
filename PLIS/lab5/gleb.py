@@ -1,5 +1,5 @@
 msgs = [
-    "Result SUB8: ", "Result MUL12: ", "Success WR24_8", "Success ON24_8", "Success OFF24_8","Success LED24_8",
+    "Result ADD8: ", "Result MUL20: ", "Success WR40_8", "Success ON40_8", "Success OFF40_8","Success LED40_8",
     "Error command!!!"
 ]
 address_count = 0

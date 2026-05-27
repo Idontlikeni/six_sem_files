@@ -1,6 +1,6 @@
 TOP_module = ~understood (apart from comments)
 ANALYZER = 90% done except for multiplexor
-HANDLER_CMD = ~understood (to do analyzis)
+HANDLER_CMD = done (except for 2 addresess in the end of the file + M of addr not sure)
 GEN_MSG = ~understood 
 INFS_8B = I've done it in uni, but I think its not entirely correct
 CNTRL_LEDS = ~understood
