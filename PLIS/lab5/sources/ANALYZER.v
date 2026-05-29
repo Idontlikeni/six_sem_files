@@ -41,6 +41,13 @@ localparam F2_STATE = 5'd12;
 localparam L2_STATE = 5'd13;
 localparam E_STATE = 5'd14;
 localparam D_STATE = 5'd15;
+localparam NUM_8_1_STATE = 5'd16;
+localparam NUM_2_1_STATE = 5'd17;
+localparam NUM_0_1_STATE = 5'd18;
+localparam NUM_4_1_STATE = 5'd19;
+localparam NUM_0_2_STATE = 5'd20;
+localparam NUM_8_1_STATE = 5'd21;
+
 // è ò.ä.
 localparam TRANS = 5'd16;
 localparam SROPR = 5'd17;
@@ -69,6 +76,10 @@ wire FLG_0;
 wire FLG_2;
 wire FLG_4;
 wire FLG_8;
+wire UNDERLINE_FLG;
+wire SPACE_FLG;
+wire CR_FLG;
+wire LF_FLG;
 
 always @(posedge CLK, posedge RST)
     if (RST) begin
@@ -110,6 +121,7 @@ always @(posedge CLK, posedge RST)
                 end
             end
             D2_STATE: if (RX_DATA_EN) begin
+                if(FLG_8) FSM_STATE <= NUM_8_1_STATE;
                 if (SPACE_FLG) begin
                     FSM_STATE <= SROPR;
                     CMD_DATA_T[50:48] = 3'b001;// 50:48? 
@@ -276,25 +288,25 @@ always @(posedge CLK, posedge RST)
         case (OPR2_FLG)
             1'b0:
                 case (CMD_DATA_T[50:48])
-                    3'b000: END_CT <= 3'h6;
-                    3'b001: END_CT <= 3'h0;
-                    3'b010: END_CT <= 3'h3;
-                    3'b011: END_CT <= 3'h6;
-                    3'b100: END_CT <= 3'h2;
-                    3'b101: END_CT <= 3'h6;
-                    3'b110: END_CT <= 3'h0;
-                    default: END_CT <= 3'h6;
+                    3'b000: END_CT <= 4'h5; // MUL20
+                    3'b001: END_CT <= 4'h2; // ADD8
+                    3'b010: END_CT <= 4'h10; // LED40_8
+                    3'b011: END_CT <= 4'h10; // OFF40_8
+                    3'b100: END_CT <= 4'h10; // ON40_8
+                    3'b101: END_CT <= 4'h10; // WR40_8
+                    3'b110: END_CT <= 4'h0; // -
+                    default: END_CT <= 4'h0; // Err
                 endcase
             1'b1:
                 case (CMD_DATA_T[50:48])
-                    3'b000: END_CT <= 3'h2;
-                    3'b001: END_CT <= 3'h0;
-                    3'b010: END_CT <= 3'h3;
-                    3'b011: END_CT <= 3'h2;
-                    3'b100: END_CT <= 3'h2;
-                    3'b101: END_CT <= 3'h2;
-                    3'b110: END_CT <= 3'h0;
-                    default: END_CT <= 3'h2;
+                    3'b000: END_CT <= 4'h5;
+                    3'b001: END_CT <= 4'h2;
+                    3'b010: END_CT <= 4'h2;
+                    3'b011: END_CT <= 4'h2;
+                    3'b100: END_CT <= 4'h2;
+                    3'b101: END_CT <= 4'h2;
+                    3'b110: END_CT <= 4'h0;
+                    default: END_CT <= 4'h0;
                 endcase
         endcase
     end
@@ -317,6 +329,7 @@ assign FLG_8 = RX_DATA_R == 8'h58;
 assign CR_FLG = RX_DATA_R == 8'h0D;
 assign LF_FLG = RX_DATA_R == 8'h0A;
 assign SPACE_FLG = RX_DATA_R == 8'h20;
+assign UNDERLINE_FLG = RX_DATA_R == 8'h5F;
 // è ò.ä.
 
 assign ASCII_DATA = RX_DATA_R;

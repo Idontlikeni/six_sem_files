@@ -123,7 +123,7 @@ always @(posedge CLK, posedge RST)
                 RES_RDY_T <= 1'b0;
                 RES_DATA <= 20'd0;
                 S_EX_REQ <= 1'b0;
-                S_ADDR <= 8'd0;
+                S_ADDR <= 40'd0;
                 S_CMD <= 3'b0;
                 S_D_WR <= 8'd0;
             end

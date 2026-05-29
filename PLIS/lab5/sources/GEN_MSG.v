@@ -115,7 +115,7 @@ always @(posedge CLK, posedge RST)
             end
         endcase
 
-assign CT_MX = (RES_DATA_R[36:34] == 3'b001) ? 2'b01 : 2'b00;
+assign CT_MX = (RES_DATA_R[36:34] == 3'b001) ? 2'b01 : 2'b00; // Err or smth
 
 always@* begin
     case (RES_CT) // Not sure about RES_CT - 2 bit or 3 bit 
