@@ -11,7 +11,7 @@ module MK_HANDLER_CMD(
     output reg CMD_RDY_R, // âûõîä ãîòîâíîñòè ïðèåìà êîìàíäû
     // STI 1.0
     output reg S_EX_REQ, // âûõîä çàïðîñà èíèöèàòîðà
-    output reg [7:0] S_ADDR, // âûõîä àäðåñà èíèöèàòîðà gleb.py
+    output reg [39:0] S_ADDR, // âûõîä àäðåñà èíèöèàòîðà gleb.py
     output reg [2:0] S_CMD, // âûõîä êîìàíäû èíèöèàòîðà
     output reg [7:0] S_D_WR, // âûõîä äàííûõ äëÿ çàïèñè èíèöèàòîðà
     input S_EX_ACK, // âõîä ïîäòâåðæäåíèÿ èíèöèàòîðà
@@ -46,7 +46,7 @@ always @(posedge CLK, posedge RST)
         RES_RDY_T <= 1'b0;
         RES_DATA <= 20'd0;
         S_EX_REQ <= 1'b0;
-        S_ADDR <= 8'd0;
+        S_ADDR <= 40'd0;
         S_CMD <= 3'b0;
         S_D_WR <= 8'd0;
         
