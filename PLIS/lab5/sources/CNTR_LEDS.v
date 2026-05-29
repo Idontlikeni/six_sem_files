@@ -14,7 +14,7 @@ module MK_CNTR_LEDS(
     // LED
     output [7:0] LED, // управляющие сигналы светодиодов
     // RAM
-    output reg [5:0] ADDR, // выход шины адреса ОЗУ
+    output reg [4:0] ADDR, // выход шины адреса ОЗУ
     input [7:0] DATA // вход шины данных ОЗУ
 );
 
@@ -34,9 +34,9 @@ wire CE_ADDR = S_EX_REQ & (~S_CMD[2]) & S_ADDR;
 
 always @(posedge CLK, posedge RST) begin
     if (RST)
-        ADDR <= 6'b0;
+        ADDR <= 5'b0; // was 6 bit
     else if (CE_ADDR)
-        ADDR <= S_D_WR[5:0];
+        ADDR <= S_D_WR[4:0]; // was 6 bit
 end
 
 assign S_D_RD = (S_ADDR) ? {2'b0, ADDR} : MASK;

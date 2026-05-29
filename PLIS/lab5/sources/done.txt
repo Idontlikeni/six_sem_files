@@ -1,14 +1,13 @@
 TOP_module = ~understood (apart from comments)
 ANALYZER = 90% done except for multiplexor
 HANDLER_CMD = done (except for 2 addresess in the end of the file + M of addr not sure)
-GEN_MSG = ~understood 
+GEN_MSG = 90% done, (look at the last lines)
 INFS_8B = I've done it in uni, but I think its not entirely correct
-CNTRL_LEDS = ~understood
-RAM
+CNTRL_LEDS = done
+RAM = done
 
 15 = 33 - 2*n - 6
 
 2n = 33 - 15 - 6
 2n = 12
 n = 6
-

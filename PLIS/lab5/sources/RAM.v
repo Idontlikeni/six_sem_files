@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module MK_RAM #(
-    parameter AW = 6
+    parameter AW = 5
 )
 (
     // System
