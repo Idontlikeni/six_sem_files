@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module MK_LAB5_TOP(
+module LAB5_TOP(
     // System
     input CLK,
     input SYS_NRST,
@@ -69,7 +69,7 @@ M_CLOCK_DIVIDER #(.MOD(100000)) DIV_1kHz (
     .clk_out(CE_1kHz)
 );
 
-MK_UART UART (
+UART UART (
     .CLK(CLK),
     .RST(RST),
     .RXD(UART_RXD),
@@ -83,7 +83,7 @@ MK_UART UART (
 
 assign RX_DATA = RX_DATA_T[7:0];
 
-MK_ANALYZER ANALYZER (
+ANALYZER ANALYZER (
     .CLK(CLK),
     .RST(RST),
     .RX_DATA_EN(RX_DATA_EN),
@@ -96,23 +96,23 @@ MK_ANALYZER ANALYZER (
     .CMD_RDY_R(CMD_RDY_R)
 );
 
-MK_DC_ASCII_HEX ASCII_TO_HEX (
+DC_ASCII_HEX ASCII_TO_HEX (
     .ASCII(RX_DATA),
     .HEX(DC_ASCII_HEX),
     .HEX_FLG(HEX_FLG)
 );
 
-MK_DC_HEX_ASCII HEX_TO_ASCII (
+DC_HEX_ASCII HEX_TO_ASCII (
     .HEX(HEX_DATA),
     .ASCII(DC_ASCII_DATA)
 );
 
-MK_ROM ROM (
+ROM ROM (
     .ADDR(ROM_ADDR),
     .DATA(ROM_DATA)
 );
 
-MK_GEN_MSG GEN_MSG (
+GEN_MSG GEN_MSG (
     .CLK(CLK),
     .RST(RST),
     .TX_RDY_T(TX_RDY_T),
@@ -127,7 +127,7 @@ MK_GEN_MSG GEN_MSG (
     .DATA(ROM_DATA)
 );
 
-MK_HANDLER_CMD HANDLER (
+HANDLER_CMD HANDLER (
     .CLK(CLK),
     .RST(RST),
     .CMD_RDY_T(CMD_RDY_T),
@@ -144,7 +144,7 @@ MK_HANDLER_CMD HANDLER (
     .RES_RDY_R(RES_RDY_R)
 );
 
-MK_CNTR_LEDS CNTR_LEDS (
+CNTR_LEDS CNTR_LEDS (
     .CLK(CLK),
     .RST(RST),
     .S_EX_REQ(I0_S_EX_REQ),
@@ -158,7 +158,7 @@ MK_CNTR_LEDS CNTR_LEDS (
     .DATA(CNTR_RAM_DATA)
 );
 
-MK_RAM #(.AW(6)) RAM (
+RAM #(.AW(6)) RAM (
     .CLK(CLK),
     .S_EX_REQ(I1_S_EX_REQ),
     .S_ADDR(I1_S_ADDR),
@@ -170,7 +170,7 @@ MK_RAM #(.AW(6)) RAM (
     .DATA(CNTR_RAM_DATA)
 );
 
-MK_INFS_8B SYSTEM_BUS (
+INFS_8B SYSTEM_BUS (
     .T_S_EX_REQ(T_S_EX_REQ),
     .T_S_ADDR(T_S_ADDR),
     .T_S_CMD(T_S_CMD),
