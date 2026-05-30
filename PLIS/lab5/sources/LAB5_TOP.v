@@ -26,7 +26,7 @@ wire RES_RDY_T;
 wire [36:0] RES_DATA_T;
 wire RES_RDY_R;
 wire T_S_EX_REQ;
-wire [23:0] T_S_ADDR;
+wire [40:0] T_S_ADDR;
 wire [2:0] T_S_CMD;
 wire [7:0] T_S_D_WR;
 wire T_S_EX_ACK;
@@ -38,12 +38,12 @@ wire [7:0] I0_S_D_WR;
 wire I0_S_EX_ACK;
 wire [7:0] I0_S_D_RD;
 wire I1_S_EX_REQ;
-wire [5:0] I1_S_ADDR;
+wire [4:0] I1_S_ADDR;
 wire [2:0] I1_S_CMD;
 wire [7:0] I1_S_D_WR;
 wire I1_S_EX_ACK;
 wire [7:0] I1_S_D_RD;
-wire [5:0] CNTR_RAM_ADDR;
+wire [4:0] CNTR_RAM_ADDR;
 wire [7:0] CNTR_RAM_DATA;
 wire [6:0] ROM_ADDR;
 wire [7:0] ROM_DATA;
@@ -63,13 +63,13 @@ end
 assign RST = RST_S[1];
 
 
-M_CLOCK_DIVIDER #(.MOD(100000)) DIV_1kHz (
-    .clk_in(CLK),
-    .reset(RST),
-    .clk_out(CE_1kHz)
+TT_DIVIDER #(.MOD(100000)) DIV_1kHz (
+    .CLK(CLK),
+    .RST(RST),
+    .CEO(CE_1kHz)
 );
 
-UART UART (
+TT_UART UART (
     .CLK(CLK),
     .RST(RST),
     .RXD(UART_RXD),
@@ -96,18 +96,18 @@ ANALYZER ANALYZER (
     .CMD_RDY_R(CMD_RDY_R)
 );
 
-DC_ASCII_HEX ASCII_TO_HEX (
+TT_DC_ASCII_HEX ASCII_TO_HEX (
     .ASCII(RX_DATA),
     .HEX(DC_ASCII_HEX),
     .HEX_FLG(HEX_FLG)
 );
 
-DC_HEX_ASCII HEX_TO_ASCII (
+TT_DC_HEX_ASCII HEX_TO_ASCII (
     .HEX(HEX_DATA),
     .ASCII(DC_ASCII_DATA)
 );
 
-ROM ROM (
+TT_ROM ROM (
     .ADDR(ROM_ADDR),
     .DATA(ROM_DATA)
 );
@@ -158,7 +158,7 @@ CNTR_LEDS CNTR_LEDS (
     .DATA(CNTR_RAM_DATA)
 );
 
-RAM #(.AW(6)) RAM (
+TT_RAM #(.AW(5)) RAM (
     .CLK(CLK),
     .S_EX_REQ(I1_S_EX_REQ),
     .S_ADDR(I1_S_ADDR),

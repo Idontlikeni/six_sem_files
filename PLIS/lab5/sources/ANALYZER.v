@@ -42,11 +42,13 @@ localparam L2_STATE = 5'd13;
 localparam E_STATE = 5'd14;
 localparam D_STATE = 5'd15;
 localparam NUM_8_1_STATE = 5'd16;
-localparam NUM_2_1_STATE = 5'd17;
+localparam NUM_2_STATE = 5'd17;
 localparam NUM_0_1_STATE = 5'd18;
-localparam NUM_4_1_STATE = 5'd19;
+localparam NUM_4_STATE = 5'd19;
 localparam NUM_0_2_STATE = 5'd20;
-localparam NUM_8_1_STATE = 5'd21;
+localparam UNDERLINE_STATE = 5'd21;
+localparam SPACE_STATE = 5'd22;
+localparam NUM_8_2_STATE = 5'd23;
 
 // è ò.ä.
 localparam TRANS = 5'd16;
@@ -59,6 +61,7 @@ reg [4:0] FSM_STATE;
 reg [3:0] DATA_CT;
 reg [3:0] END_CT;
 reg OPR2_FLG;
+reg [1:0] X40_8_FLG;
 
 wire A_FLG;
 wire D_FLG;
@@ -104,7 +107,7 @@ always @(posedge CLK, posedge RST)
                     CMD_DATA_T[50:48] <= 3'b111; // I think I should change this to 50:48
                 end
             end
-            A_STATE: if (RX_DATA_EN) begin
+            A_STATE: if (RX_DATA_EN) begin // ADD8
                 if (D_FLG) FSM_STATE <= D1_STATE;
                 else begin
                     FSM_STATE <= TRANS;
@@ -122,6 +125,13 @@ always @(posedge CLK, posedge RST)
             end
             D2_STATE: if (RX_DATA_EN) begin
                 if(FLG_8) FSM_STATE <= NUM_8_1_STATE;
+                else begin
+                    FSM_STATE <= TRANS;
+                    CMD_RDY_T <= 1'b1;
+                    CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
+                end
+            end
+            NUM_8_1_STATE: if (RX_DATA_EN) begin
                 if (SPACE_FLG) begin
                     FSM_STATE <= SROPR;
                     CMD_DATA_T[50:48] = 3'b001;// 50:48? 
@@ -133,7 +143,7 @@ always @(posedge CLK, posedge RST)
                 end
             end
 
-            M_STATE: if (RX_DATA_EN) begin
+            M_STATE: if (RX_DATA_EN) begin // MUL20
                 if (U_FLG) FSM_STATE <= U_STATE;
                 else begin
                     FSM_STATE <= TRANS;
@@ -150,6 +160,22 @@ always @(posedge CLK, posedge RST)
                 end
             end
             L1_STATE: if (RX_DATA_EN) begin
+                if (FLG_2) FSM_STATE <= NUM_2_STATE;
+                else begin
+                    FSM_STATE <= TRANS;
+                    CMD_RDY_T <= 1'b1;
+                    CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
+                end
+            end
+            NUM_2_STATE: if (RX_DATA_EN) begin
+                if (FLG_0) FSM_STATE <= NUM_0_1_STATE;
+                else begin
+                    FSM_STATE <= TRANS;
+                    CMD_RDY_T <= 1'b1;
+                    CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
+                end
+            end
+            NUM_0_1_STATE: if (RX_DATA_EN) begin
                 if (SPACE_FLG) begin
                     FSM_STATE <= SROPR;
                     CMD_DATA_T[50:48] = 3'b000;// 50:48? 
@@ -170,9 +196,9 @@ always @(posedge CLK, posedge RST)
                 end
             end
             R_STATE: if (RX_DATA_EN) begin
-                if (SPACE_FLG) begin
-                    FSM_STATE <= SROPR;
-                    CMD_DATA_T[50:48] = 3'b101;// 50:48? 
+                if (FLG_4) begin
+                    FSM_STATE <= NUM_4_STATE;
+                    X40_8_FLG = 2'b00; // WR
                 end
                 else begin
                     FSM_STATE <= TRANS;
@@ -191,13 +217,13 @@ always @(posedge CLK, posedge RST)
                 end
             end
             N_STATE: if (RX_DATA_EN) begin
-                if (SPACE_FLG) begin
-                    FSM_STATE <= SROPR;
-                    CMD_DATA_T[50:48] = 3'b100;// 50:48? 
+                if (FLG_4) begin
+                    FSM_STATE <= NUM_4_STATE;
+                    X40_8_FLG <= 2'b01; // ON
                 end
                 else begin
                     FSM_STATE <= TRANS;
-                    CMD_RDY_T <= 1'b1;
+                    CMD_RDY_T <= 1'b01;
                     CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
                 end
             end
@@ -210,9 +236,9 @@ always @(posedge CLK, posedge RST)
                 end
             end
             F2_STATE: if (RX_DATA_EN) begin
-                if (SPACE_FLG) begin
-                    FSM_STATE <= SROPR;
-                    CMD_DATA_T[50:48] = 3'b011;// 50:48? 
+                if (FLG_4) begin
+                    FSM_STATE <= NUM_4_STATE;
+                    X40_8_FLG <= 2'b10; // OFF
                 end
                 else begin
                     FSM_STATE <= TRANS;
@@ -220,7 +246,73 @@ always @(posedge CLK, posedge RST)
                     CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
                 end
             end
-
+            L2_STATE: if(RX_DATA_EN) begin
+                if(E_FLG) FSM_STATE <= E_STATE;
+                else begin
+                    FSM_STATE <= TRANS;
+                    CMD_RDY_T <= 1'b1;
+                    CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
+                end
+            end
+            E_STATE: if(RX_DATA_EN) begin
+                if(D_FLG) FSM_STATE <= D_STATE;
+                else begin
+                    FSM_STATE <= TRANS;
+                    CMD_RDY_T <= 1'b1;
+                    CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
+                end
+            end
+            D_STATE: if (RX_DATA_EN) begin
+                if (FLG_4) begin
+                    FSM_STATE <= NUM_4_STATE;
+                    X40_8_FLG <= 2'b11; // LED
+                end
+                else begin
+                    FSM_STATE <= TRANS;
+                    CMD_RDY_T <= 1'b1;
+                    CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
+                end
+            end
+            NUM_4_STATE: if(RX_DATA_EN) begin
+                if(FLG_0) FSM_STATE <= NUM_0_2_STATE;
+                else begin
+                    FSM_STATE <= TRANS;
+                    CMD_RDY_T <= 1'b1;
+                    CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
+                end
+            end
+            NUM_0_2_STATE: if(RX_DATA_EN) begin
+                if(UNDERLINE_FLG) FSM_STATE <= UNDERLINE_STATE;
+                else begin
+                    FSM_STATE <= TRANS;
+                    CMD_RDY_T <= 1'b1;
+                    CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
+                end
+            end
+            UNDERLINE_STATE: if(RX_DATA_EN) begin
+                if(FLG_8) FSM_STATE <= NUM_8_2_STATE;
+                else begin
+                    FSM_STATE <= TRANS;
+                    CMD_RDY_T <= 1'b1;
+                    CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
+                end
+            end
+            NUM_8_2_STATE: if(RX_DATA_EN) begin
+                if (SPACE_FLG) begin
+                    FSM_STATE <= SROPR;
+                    case(X40_8_FLG)
+                        2'b00: CMD_DATA_T[50:48] = 3'b101; // WR
+                        2'b01: CMD_DATA_T[50:48] = 3'b100; // ON
+                        2'b10: CMD_DATA_T[50:48] = 3'b011; // OFF
+                        2'b11: CMD_DATA_T[50:48] = 3'b010; // LED
+                    endcase
+                end
+                else begin
+                    FSM_STATE <= TRANS;
+                    CMD_RDY_T <= 1'b1;
+                    CMD_DATA_T[50:48] <= 3'b111;// 50:48? 
+                end
+            end
             // ============
             // è ò.ä.
             // ============
