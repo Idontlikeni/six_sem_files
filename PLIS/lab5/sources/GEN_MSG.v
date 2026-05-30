@@ -29,8 +29,8 @@ localparam TDT = 3'd3; // Передача данных результата
 localparam TCR = 3'd4; // Передача символа CR
 localparam TLF = 3'd5; // Передача символа LF
 
-reg [1:0] RES_CT; // счетчик символов результата
-wire [1:0] CT_MX; // загружаемое значение счетчика RES_CT
+reg [2:0] RES_CT; // счетчик символов результата
+wire [2:0] CT_MX; // загружаемое значение счетчика RES_CT
 reg [6:0] END_ADDR; // значение последнего адреса обращения к ПЗУ
 reg [19:0] RES_DATA; // данные результата why 12 bits tho, in pres it is 16
 reg RES_FLG; // флаг результата выполнения арифметической операции
@@ -42,7 +42,7 @@ always @(posedge CLK, posedge RST)
         TX_RDY_T <= 1'b0;
         TX_DATA_T <= 8'd0;
         RES_RDY_R <= 1'b1;
-        RES_CT <= 2'b0;
+        RES_CT <= 3'b0;
         RES_DATA <= 20'd0;
         RES_FLG <= 1'b0;
         ADDR <= 7'b0;
@@ -84,7 +84,7 @@ always @(posedge CLK, posedge RST)
                 end
             end
             TDT: if (TX_RDY_R) begin
-                if (RES_CT == 2'b11) begin // ???? (~|RES_CT)
+                if (RES_CT == 3'b100) begin // ???? (~|RES_CT)
                     FSM_STATE <= TCR;
                     TX_DATA_T <= 8'h0D;
                 end
@@ -107,7 +107,7 @@ always @(posedge CLK, posedge RST)
                 TX_RDY_T <= 1'b0;
                 TX_DATA_T <= 8'd0;
                 RES_RDY_R <= 1'b1;
-                RES_CT <= 2'b0;
+                RES_CT <= 3'b0;
                 RES_DATA <= 20'd0;
                 RES_FLG <= 1'b0;
                 ADDR <= 7'b0;
@@ -115,13 +115,15 @@ always @(posedge CLK, posedge RST)
             end
         endcase
 
-assign CT_MX = (RES_DATA_R[36:34] == 3'b001) ? 2'b01 : 2'b00; // Err or smth
+assign CT_MX = (RES_DATA_R[36:34] == 3'b001) ? 3'b011 : 3'b00; // Err or smth [19:16] [15:12] [11:8] [7:4] [3:0]
 
 always@* begin
     case (RES_CT) // Not sure about RES_CT - 2 bit or 3 bit 
-        2'b00: HEX_DATA <= RES_DATA[11:8];
-        2'b01: HEX_DATA <= RES_DATA[7:4];
-        2'b10: HEX_DATA <= RES_DATA[3:0];
+        3'b000: HEX_DATA <= RES_DATA[19:16];
+        3'b001: HEX_DATA <= RES_DATA[15:12];
+        3'b010: HEX_DATA <= RES_DATA[11:8];
+        3'b011: HEX_DATA <= RES_DATA[7:4];
+        3'b100: HEX_DATA <= RES_DATA[3:0];
         default: HEX_DATA <= 4'h0;
     endcase
 end
